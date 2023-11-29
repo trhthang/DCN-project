@@ -1,0 +1,84 @@
+apiVersion: example/v1alpha1
+kind: LogicalCluster 
+metadata:
+  name: mec-cluster
+spec:
+  clusters:
+    - cluster:
+      id: 1
+      name: RegionalCluster
+      metadata:
+        labels:
+          type: regional
+          region: us-west1
+      spec:
+        packages:
+          - packageVariant:
+            name: nginx-package
+            repo: lkass-packages
+            package: pkg-example-nginx
+            revision: v5
+        cni: flannel
+    - cluster:
+      id: 2
+      name: Edge01
+      metadata:
+        labels:
+          type: edge
+          region: us-west1
+      spec:
+        packages:
+          - packageVariant:
+            name: prometheus-package
+            repo: lkass-packages
+            package: pkg-example-prometheus
+            revision: v5
+        cni: calio
+-------------------------
+apiVersion: example/v1alpha1
+kind: WorkloadCluster
+metadata:
+  name: mec-cluster
+spec:
+  clusterName: RegionalCluster
+  labels:
+    type: regional
+    region: us-west1
+  cni: flannel
+--------------------------
+apiVersion: config.porch.kpt.dev/v1alpha2
+kind: PackageVariant
+metadata:
+  name: nginx-package
+spec:
+  upstream:
+    repo: lkass-packages
+    package: pkg-example-nginx
+    revision: v5
+  downstream:
+    package: example-configsync
+    repo: RegionalCluster
+------------------------------
+apiVersion: example/v1alpha1
+kind: WorkloadCluster
+metadata:
+  name: mec-cluster
+spec:
+  clusterName: Edge01
+  labels:
+    type: edge
+    region: us-west1
+  cni: calio
+----------------------------
+apiVersion: config.porch.kpt.dev/v1alpha2
+kind: PackageVariant
+metadata:
+  name: nginx-package
+spec:
+  upstream:
+    repo: lkass-packages
+    package: prometheus-package
+    revision: v5
+  downstream:
+    package: example-configsync
+    repo: Edge01

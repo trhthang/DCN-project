@@ -1,0 +1,13 @@
+clusterid: 1
+name: RegionalCluster
+metadata:
+  labels:
+    region: us-west1
+    type: regional
+spec:
+  packages:
+  - packagevariant:
+      name: nginx-package
+      repo: lkass-packages
+      package: pkg-example-nginx
+      revision: v5
