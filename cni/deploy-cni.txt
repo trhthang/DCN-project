@@ -1,0 +1,1 @@
+https://livebook.manning.com/book/acing-the-certified-kubernetes-administrator-exam/appendix-c/4

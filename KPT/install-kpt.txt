@@ -1,0 +1,5 @@
+// install gcloud
+https://cloud.google.com/sdk/docs/install
+
+// install kpt
+https://kpt.dev/installation/kpt-cli
